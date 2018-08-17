@@ -3,4 +3,13 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="black">#121A1C</color>
+
+    <color name="yellow">#f1c40f</color>
+    <color name="white">#ffffff</color>
+    <color name="blackk">#000000</color>
+    <color name="green">#27AE60</color>
+    <color name="light_purple">#e8e1e7</color>
+    <color name="light_green">#77a577</color>
+    <color name="dark_green">#008000</color>
 </resources>
