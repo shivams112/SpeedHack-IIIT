@@ -22,4 +22,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."</string>
     <string name="Invalid">Invalid Vehicle No.</string>
+    <string name="title_activity_bot">BotActivity</string>
+    <string name="title_activity_talk_bot">TalkBot</string>
 </resources>

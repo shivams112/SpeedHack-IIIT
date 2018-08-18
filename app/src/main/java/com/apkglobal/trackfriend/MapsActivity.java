@@ -46,6 +46,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     LocationManager locationManager;
     private SpeechRecognizer sr;
     static int count =2;
+    public int x=1;
 
     //String loc;
 
@@ -60,6 +61,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        if(x==1){
+        Intent intent = new Intent(MapsActivity.this ,TalkBot.class);
+        startActivity(intent);
+        x=2;}
         /*Intent intent=new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS,1);
