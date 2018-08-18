@@ -28,6 +28,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
@@ -44,6 +45,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private TextToSpeech tts;
     LocationManager locationManager;
     private SpeechRecognizer sr;
+    static int count =2;
+
+    //String loc;
+
     static final Double EARTH_Radius = 6371.00;
 
     @Override
@@ -62,6 +67,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
     private void intializeTextToSpeech() {
         tts=new TextToSpeech(this, new TextToSpeech.OnInitListener() {
+
             @Override
             public void onInit(int status) {
                 if(tts.getEngines().size()==0)
@@ -71,12 +77,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 }
                 else {
                     tts.setLanguage(Locale.US);
-                    if (speed > 0.4) {
-                        speak("Please Maintain the speed.This is your first warning");
+                    if (speed >0.4 && count==2) {
+
+                        count++;}
+                       else if(speed>0.4 && count==3){
+
+                        speak("Please Maintain the speed This is your first warning");
+                            count++;
+                        }
+                       else if(speed>0.4 && count==4){
+                        speak("Please Maintain the speed This is your Second warning Next time you have to pay fine");
+                            count++;
+
+                        }
+                    else if(speed>0.4 && count==5){
+                        speak("Your Challan receipt has been generated");
+                        count++;
 
                     }
 
+
+
+
                 }
+              //  mMap.addMarker(new MarkerOptions().position(latLng).title(loc)).setInfoWindowAnchor(speak("the ");
+
             }
         });
     }
@@ -119,15 +144,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 lat = location.getLatitude();
                 lng = location.getLongitude();
 
-
                 LatLng latLng = new LatLng(lat,lng);
+
                 Geocoder geocoder = new Geocoder(MapsActivity.this);
+                speed=0.0;
                 try {
                     List<Address> list = geocoder.getFromLocation(lat,lng,1);
                     String loc = list.get(0).getAddressLine(0);
                    // float speed=location.getSpeed();
                  // boolean sspeed=location.hasSpeed();
+
                   double dis=CalcDistance(lat,lng,old_lat,old_lng);
+
                   speed = dis/1.0;
                     Toast.makeText(MapsActivity.this, String.valueOf(speed), Toast.LENGTH_SHORT).show();
                     //Toast.makeText(MapsActivity.this, String.valueOf(sspeed), Toast.LENGTH_SHORT).show();
@@ -136,8 +164,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     String s=formatter.toString();
                     sendloc(loc,s);
                     mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
-                    mMap.addMarker(new MarkerOptions().position(latLng).title(loc));
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                    mMap.addMarker(new MarkerOptions().position(latLng).title(loc));
+                     mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                         @Override
+                         public boolean onMarkerClick(Marker marker) {
+
+                             speak("the maximum speed limit of vehicle on this road is 40 kilometer per hour");
+                             return false;
+                         }
+                     });
+
                     old_lat = lat;
                     old_lng = lng;
                     intializeTextToSpeech();
